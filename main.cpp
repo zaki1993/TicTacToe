@@ -33,6 +33,5 @@ int main(){
 	while (activeGame){
 		//TODO
 	}
-	system("pause");
 	return 0;
 }
