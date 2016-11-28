@@ -26,7 +26,9 @@ public class Main {
 	public static void main(String[] args) {
 			Scanner input = new Scanner(System.in);
 			char board[][] = { { '_', '_', '_' }, { '_', '_', '_' }, { '_', '_', '_' } }; // Initialize the board 3x3
-			
+			final int[][][] DRAW_POSITION = {}; //TODO
+			final int[][][] WIN_POSITIONS = {}; //TODO
+		
 			byte posX = 0, posY = 0;  // Positions to put symbol to
 			
 			final byte BOARD_SIZE = 3; //Initialize board size
