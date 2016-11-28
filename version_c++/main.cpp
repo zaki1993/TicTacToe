@@ -34,11 +34,17 @@ void printBoard(char board[BOARD_SIZE][BOARD_SIZE]){
 }
 int main(){
 	char board[BOARD_SIZE][BOARD_SIZE] = { { '_', '_', '_' }, { '_', '_', '_' }, { '_', '_', '_' } }; // Initialize the board 3x3
+	
+	const int[][][] DRAW_POSITIONS = {}; //TODO
+	const int[][][] WIN_POSITIONS = {}; //TODO
+	
 	bool activeGame = true;
 	unsigned short posX = 0, posY = 0;  // Positions to put symbol to
 	bool playerOneMove = true;
 	bool playerTwoMove = false;
+	
 	printBoard(board);
+	
 	while (activeGame){
 		if (playerOneMove){
 			cout << "Player one's turn!" << endl;
