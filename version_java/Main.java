@@ -45,6 +45,7 @@ public class Main {
 		}
 		return false;
 	}
+	
 	public static boolean isWinBot(char [][]board, final char BOT, final int[][][] WIN_POSITIONS){
 		boolean hasWinner = false;
 		for(int i = 0;i<WIN_POSITIONS.length;i++){
@@ -74,8 +75,46 @@ public class Main {
 		}
 	}
 	
-	public static void botMove(char [][]board, final char BOT){
+	public static void botMove(char [][]board, final char BOT, final int[][][]BOT_CHECK_WIN){
+		boolean canWin = false;
 		byte posX = 0, posY = 0;
+		int index = 0;
+		for(int i = 0;i<BOT_CHECK_WIN.length;i++){
+			canWin = false;
+			for (int j = 0; j < BOT_CHECK_WIN[i].length; j++) {
+				if(board[BOT_CHECK_WIN[i][j][0]][BOT_CHECK_WIN[i][j][1]] == BOT){
+					canWin = true;
+					index = i;
+				}
+				else{
+					break;
+				}
+			}
+			if(canWin){
+				if(index % 3 == 0){
+					if(board[BOT_CHECK_WIN[index][1][0]][BOT_CHECK_WIN[index][1][1] + 1] != '_'){
+						continue;
+					}
+					board[BOT_CHECK_WIN[index][1][0]][BOT_CHECK_WIN[index][1][1] + 1] = BOT;
+					return;
+				}
+				if(index % 3 == 1){
+					if(board[BOT_CHECK_WIN[index][1][0]][BOT_CHECK_WIN[index][1][1] - 2] != '_'){
+						continue;
+					}
+					board[BOT_CHECK_WIN[index][1][0]][BOT_CHECK_WIN[index][1][1] - 2] = BOT;
+					return;
+				}
+				if(index % 3 == 2){
+					if(board[BOT_CHECK_WIN[index][1][0]][BOT_CHECK_WIN[index][1][1] - 1] != '_'){
+						continue;
+					}
+					board[BOT_CHECK_WIN[index][1][0]][BOT_CHECK_WIN[index][1][1] - 1] = BOT;
+					return;
+				}
+			}
+		}
+		
 		do{
 			posX = (byte)(Math.random()*(3-0) + 0);
 			posY = (byte)(Math.random()*(3-0) + 0);
@@ -86,6 +125,7 @@ public class Main {
 	public static void main(String[] args) {
 			Scanner input = new Scanner(System.in);
 			char board[][] = { { '_', '_', '_' }, { '_', '_', '_' }, { '_', '_', '_' } }; // Initialize the board 3x3
+			
 			final int [][][]WIN_POSITIONS = {{{0,0},{0,1},{0,2}},
 											{{1,0},{1,1},{1,2}},
 											{{2,0},{2,1},{2,2}},
@@ -94,6 +134,31 @@ public class Main {
 											{{0,2},{1,2},{2,2}},
 											{{0,0},{1,1},{2,2}},
 											{{0,2},{1,1},{2,0}}};
+			
+			final int [][][]BOT_CHECK_WIN ={{{0,0},{0,1}},
+											{{0,1},{0,2}},
+											{{0,0},{0,2}},
+											{{1,0},{1,1}},
+											{{1,1},{1,2}},
+											{{1,0},{1,2}},
+											{{2,0},{2,1}},
+											{{2,1},{2,2}},
+											{{2,0},{2,2}},
+											{{0,0},{1,0}},
+											{{1,0},{2,0}},
+											{{0,0},{2,0}},
+											{{0,1},{1,1}},
+											{{1,1},{2,1}},
+											{{0,1},{2,1}},
+											{{0,2},{1,2}},
+											{{1,2},{2,2}},
+											{{0,2},{2,2}},
+											{{0,0},{1,1}},
+											{{1,1},{2,2}},
+											{{0,0},{2,2}},
+											{{0,2},{1,1}},
+											{{1,1},{2,0}},
+											{{0,2},{2,0}}};
 			
 			byte posX = 0, posY = 0;  // Positions to put symbol to
 			
@@ -123,7 +188,7 @@ public class Main {
 					board[posX][posY] = PLAYER;
 				}
 				if (botMove){
-					botMove(board, BOT);
+					botMove(board, BOT, BOT_CHECK_WIN);
 				}
 				
 				System.out.println();
@@ -132,7 +197,7 @@ public class Main {
 				
 				if (!activeGame){
 					if (whoWonTheGame(board, PLAYER, BOT, WIN_POSITIONS) == PLAYER_WON){
-						System.out.println("Player one won the game..!");
+						System.out.println("Player won the game..!");
 					}
 					else if(whoWonTheGame(board, PLAYER, BOT, WIN_POSITIONS) == BOT_WON){
 						System.out.println("The bot won the game..!");
