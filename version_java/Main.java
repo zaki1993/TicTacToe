@@ -2,10 +2,10 @@ import java.util.Scanner;
 
 public class Main {
 	public static boolean isActiveGame(char [][]board, final char PLAYER, final char BOT, final int[][][] WIN_POSITIONS){
-		return !isWinPlayer(board, PLAYER, WIN_POSITIONS) || !isWinBot(board, BOT, WIN_POSITIONS) || hasFreeSpace(board);
+		return !isWinPlayer(board, PLAYER, WIN_POSITIONS) && !isWinBot(board, BOT, WIN_POSITIONS) && hasFreeSpace(board);
 	}
 
-	public static int whoWonTheGame(char [][]board, final char PLAYER, final char BOT, final int[][][] WIN_POSITIONS){
+	public static byte whoWonTheGame(char [][]board, final char PLAYER, final char BOT, final int[][][] WIN_POSITIONS){
 		if(isWinPlayer(board, PLAYER, WIN_POSITIONS)){
 			return 1;
 		}
@@ -27,34 +27,42 @@ public class Main {
 	}
 	
 	public static boolean isWinPlayer(char [][]board, final char PLAYER, final int[][][] WIN_POSITIONS){
-		boolean hasWinner = true;
+		boolean hasWinner = false;
 		for(int i = 0;i<WIN_POSITIONS.length;i++){
 			hasWinner = true;
 			for(int j = 0;j<WIN_POSITIONS[i].length;j++){
-				if(board[WIN_POSITIONS[i][j][0]][WIN_POSITIONS[i][j][1]] != PLAYER){
+				if(board[WIN_POSITIONS[i][j][0]][WIN_POSITIONS[i][j][1]] == PLAYER){
+					hasWinner = true;
+				}
+				else{
 					hasWinner = false;
 					break;
 				}
 			}
+			if(hasWinner){
+				return true;
+			}
 		}
-		return hasWinner;
+		return false;
 	}
 	public static boolean isWinBot(char [][]board, final char BOT, final int[][][] WIN_POSITIONS){
-		boolean hasWinner = true;
+		boolean hasWinner = false;
 		for(int i = 0;i<WIN_POSITIONS.length;i++){
 			hasWinner = true;
 			for(int j = 0;j<WIN_POSITIONS[i].length;j++){
-				if(board[WIN_POSITIONS[i][j][0]][WIN_POSITIONS[i][j][1]] != BOT){
+				if(board[WIN_POSITIONS[i][j][0]][WIN_POSITIONS[i][j][1]] == BOT){
+					hasWinner = true;
+				}
+				else{
 					hasWinner = false;
 					break;
 				}
 			}
+			if(hasWinner){
+				return true;
+			}
 		}
-		return hasWinner;
-	}
-	
-	public static boolean canPlaceThere(char [][]board, byte posX, byte posY,final byte BOARD_SIZE, final char PLAYER, final char BOT){
-		return board[posX][posY] != PLAYER && board[posX][posY] != BOT && (posX >= 0 && posX < BOARD_SIZE) && (posY >= 0 && posY < BOARD_SIZE);
+		return false;
 	}
 
 	public static void printBoard(char [][]board){
@@ -67,7 +75,12 @@ public class Main {
 	}
 	
 	public static void botMove(char [][]board, final char BOT){
-		//TODO
+		byte posX = 0, posY = 0;
+		do{
+			posX = (byte)(Math.random()*(3-0) + 0);
+			posY = (byte)(Math.random()*(3-0) + 0);
+		}while(board[posX][posY] != '_');
+		board[posX][posY] = BOT;
 	}
 	
 	public static void main(String[] args) {
@@ -106,13 +119,14 @@ public class Main {
 						System.out.println("Please enter position to put " + PLAYER + " sign!");
 						posX = input.nextByte();
 						posY = input.nextByte();
-					}while (!canPlaceThere(board, posX, posY,BOARD_SIZE,PLAYER,BOT));
+					}while ((posX<0 || posX>= BOARD_SIZE) || (posY<0 || posY>=BOARD_SIZE) || (board[posX][posY] != '_'));
 					board[posX][posY] = PLAYER;
 				}
 				if (botMove){
 					botMove(board, BOT);
 				}
 				
+				System.out.println();
 				printBoard(board);
 				activeGame = isActiveGame(board, PLAYER, BOT, WIN_POSITIONS);
 				
