@@ -126,6 +126,16 @@ public class Main {
 		}
 		
 		byte posX = 0, posY = 0;
+		if(board[0][1] == '_' || board[1][0] == '_' || board[1][2] == '_' || board[2][1] == '_'){
+			
+			do{
+				posX = (byte)(Math.random()*(3-0) + 0);
+				posY = (byte)(Math.random()*(3-0) + 0);
+			}while(board[posX][posY] != '_' || (!(posX == 0 && posY == 1) && !(posX == 1 && posY == 0) && !(posX == 1 && posY == 2) && !(posX == 2 && posY == 1)));
+			board[posX][posY] = BOT;
+			return;
+		}
+		
 		do{
 			posX = (byte)(Math.random()*(3-0) + 0);
 			posY = (byte)(Math.random()*(3-0) + 0);
@@ -200,22 +210,26 @@ public class Main {
 				}
 				if (botMove){
 					botMove(board, BOT, PLAYER, BOT_CHECK_WIN);
+
+					System.out.println();
+					printBoard(board);
 				}
 				
-				System.out.println();
-				printBoard(board);
 				activeGame = isActiveGame(board, PLAYER, BOT, WIN_POSITIONS);
 				
 				if (!activeGame){
 					if (whoWonTheGame(board, PLAYER, BOT, WIN_POSITIONS) == PLAYER_WON){
+						printBoard(board);
 						System.out.println("Player won the game..!");
 					}
 					else if(whoWonTheGame(board, PLAYER, BOT, WIN_POSITIONS) == BOT_WON){
 						System.out.println("The bot won the game..!");
 					}
 					else if(whoWonTheGame(board, PLAYER, BOT, WIN_POSITIONS) == DRAW){
+						printBoard(board);
 						System.out.println("It's draw");
 					}
+					
 					continue;
 				}
 				
