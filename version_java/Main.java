@@ -140,10 +140,14 @@ public class Main {
 		byte posX = 0, posY = 0;
 
 		if(board[1][1] != PLAYER && freeSpace(board) == 8){
+			if(board[0][0] == PLAYER || board[0][2] == PLAYER || board[2][0] == PLAYER || board[2][2] == PLAYER){
+				board[1][1] = BOT;
+				return;
+			}
 			do{
 				posX = (byte)(Math.random()*(3-0) + 0);
 				posY = (byte)(Math.random()*(3-0) + 0);
-			}while(board[posX][posY] != '_' || (!(posX == 0 && posY == 1) && !(posX == 1 && posY == 0) && !(posX == 1 && posY == 2) && !(posX == 2 && posY == 1)));
+			}while(board[posX][posY] != '_' || (!(posX == 0 && posY == 0) && !(posX == 0 && posY == 2) && !(posX == 2 && posY == 0) && !(posX == 2 && posY == 2)));
 			board[posX][posY] = BOT;
 			return;
 		}
