@@ -141,7 +141,18 @@ public class Main {
 
 		if(board[1][1] != PLAYER && freeSpace(board) == 8){
 			if(board[0][0] == PLAYER || board[0][2] == PLAYER || board[2][0] == PLAYER || board[2][2] == PLAYER){
-				board[1][1] = BOT;
+				if(board[0][0] == PLAYER){
+					board[2][2] = BOT;
+				}
+				if(board[2][2] == PLAYER){
+					board[0][0] = BOT;
+				}
+				if(board[0][2] == PLAYER){
+					board[2][0] = BOT;
+				}
+				if(board[2][0] == PLAYER){
+					board[0][2] = BOT;
+				}
 				return;
 			}
 			do{
