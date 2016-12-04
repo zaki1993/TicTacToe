@@ -75,6 +75,18 @@ public class Main {
 		}
 	}
 	
+	public static int freeSpace(char [][] board){
+		int result = 0;
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				if(board[i][j] == '_'){
+					result++;
+				}
+			}
+		}
+		return result;
+	}
+	
 	public static boolean botWinGap(char [][]board, final char BOT, final char SOMEONE, final int[][][]BOT_CHECK_WIN){
 		boolean canWin = false;
 		int index = 0;
@@ -126,12 +138,24 @@ public class Main {
 		}
 		
 		byte posX = 0, posY = 0;
-		if(board[0][1] == '_' || board[1][0] == '_' || board[1][2] == '_' || board[2][1] == '_'){
-			
+		if(board[1][1] == PLAYER && freeSpace(board) == 8){
+			board[2][0] = BOT;
+			return;
+		}
+		if(board[1][1] != PLAYER && freeSpace(board) == 8){
 			do{
 				posX = (byte)(Math.random()*(3-0) + 0);
 				posY = (byte)(Math.random()*(3-0) + 0);
 			}while(board[posX][posY] != '_' || (!(posX == 0 && posY == 1) && !(posX == 1 && posY == 0) && !(posX == 1 && posY == 2) && !(posX == 2 && posY == 1)));
+			board[posX][posY] = BOT;
+			return;
+		}
+		
+		if(board[0][0] == '_' || board[0][2] == '_' || board[2][0] == '_' || board[2][2] == '_'){
+			do{
+				posX = (byte)(Math.random()*(3-0) + 0);
+				posY = (byte)(Math.random()*(3-0) + 0);
+			}while(board[posX][posY] != '_' || (!(posX == 0 && posY == 0) && !(posX == 0 && posY == 2) && !(posX == 2 && posY == 0) && !(posX == 2 && posY == 2)));
 			board[posX][posY] = BOT;
 			return;
 		}
