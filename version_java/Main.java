@@ -138,10 +138,7 @@ public class Main {
 		}
 		
 		byte posX = 0, posY = 0;
-		if(board[1][1] == PLAYER && freeSpace(board) == 8){
-			board[2][0] = BOT;
-			return;
-		}
+
 		if(board[1][1] != PLAYER && freeSpace(board) == 8){
 			do{
 				posX = (byte)(Math.random()*(3-0) + 0);
