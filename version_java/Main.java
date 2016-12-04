@@ -75,46 +75,57 @@ public class Main {
 		}
 	}
 	
-	public static void botMove(char [][]board, final char BOT, final int[][][]BOT_CHECK_WIN){
+	public static boolean botWinGap(char [][]board, final char BOT, final char SOMEONE, final int[][][]BOT_CHECK_WIN){
 		boolean canWin = false;
-		byte posX = 0, posY = 0;
 		int index = 0;
 		for(int i = 0;i<BOT_CHECK_WIN.length;i++){
 			canWin = false;
 			for (int j = 0; j < BOT_CHECK_WIN[i].length; j++) {
-				if(board[BOT_CHECK_WIN[i][j][0]][BOT_CHECK_WIN[i][j][1]] == BOT){
+				if(board[BOT_CHECK_WIN[i][j][0]][BOT_CHECK_WIN[i][j][1]] == SOMEONE){
 					canWin = true;
 					index = i;
 				}
 				else{
+					canWin = false;
 					break;
 				}
 			}
 			if(canWin){
 				if(index % 3 == 0){
-					if(board[BOT_CHECK_WIN[index][1][0]][BOT_CHECK_WIN[index][1][1] + 1] != '_'){
+					if(board[BOT_CHECK_WIN[index + 1][1][0]][BOT_CHECK_WIN[index + 1][1][1]] != '_'){
 						continue;
 					}
-					board[BOT_CHECK_WIN[index][1][0]][BOT_CHECK_WIN[index][1][1] + 1] = BOT;
-					return;
+					board[BOT_CHECK_WIN[index + 1][1][0]][BOT_CHECK_WIN[index + 1][1][1]] = BOT;
+					return true;
 				}
 				if(index % 3 == 1){
-					if(board[BOT_CHECK_WIN[index][1][0]][BOT_CHECK_WIN[index][1][1] - 2] != '_'){
+					if(board[BOT_CHECK_WIN[index + 1][0][0]][BOT_CHECK_WIN[index + 1][0][1]] != '_'){
 						continue;
 					}
-					board[BOT_CHECK_WIN[index][1][0]][BOT_CHECK_WIN[index][1][1] - 2] = BOT;
-					return;
+					board[BOT_CHECK_WIN[index + 1][0][0]][BOT_CHECK_WIN[index + 1][0][1]] = BOT;
+					return true;
 				}
 				if(index % 3 == 2){
-					if(board[BOT_CHECK_WIN[index][1][0]][BOT_CHECK_WIN[index][1][1] - 1] != '_'){
+					if(board[BOT_CHECK_WIN[index - 2][1][0]][BOT_CHECK_WIN[index - 2][1][1]] != '_'){
 						continue;
 					}
-					board[BOT_CHECK_WIN[index][1][0]][BOT_CHECK_WIN[index][1][1] - 1] = BOT;
-					return;
+					board[BOT_CHECK_WIN[index - 2][1][0]][BOT_CHECK_WIN[index - 2][1][1]] = BOT;
+					return true;
 				}
 			}
 		}
+		return false;
+	}
+	
+	public static void botMove(char [][]board, final char BOT, final char PLAYER, final int[][][]BOT_CHECK_WIN){
+		if(botWinGap(board, BOT, BOT, BOT_CHECK_WIN)){
+			return;
+		}
+		if(botWinGap(board, BOT, PLAYER, BOT_CHECK_WIN)){
+			return;
+		}
 		
+		byte posX = 0, posY = 0;
 		do{
 			posX = (byte)(Math.random()*(3-0) + 0);
 			posY = (byte)(Math.random()*(3-0) + 0);
@@ -188,7 +199,7 @@ public class Main {
 					board[posX][posY] = PLAYER;
 				}
 				if (botMove){
-					botMove(board, BOT, BOT_CHECK_WIN);
+					botMove(board, BOT, PLAYER, BOT_CHECK_WIN);
 				}
 				
 				System.out.println();
